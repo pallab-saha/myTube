@@ -24,29 +24,31 @@ const loadCategories = () => {
 };
 // Load video Details Button
 const loadVideoDetails = async (videoId) => {
-    const url = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
-    const res = await fetch(url);
-    const data = await res.json();
-    displayDetails(data.video);
-}
+  const url = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayDetails(data.video);
+};
 
 const displayDetails = (video) => {
-    const modalContent = document.getElementById('modal-content');
-    modalContent.innerHTML=`
+  const modalContent = document.getElementById("modal-content");
+  modalContent.innerHTML = `
     <img src="${video.thumbnail}">
     <p>${video.description}</p>
-    `
+    `;
 
-    //way-1
-    // document.getElementById('showModalData').click();
+  //way-1
+  // document.getElementById('showModalData').click();
 
-    //way-2
-    document.getElementById('customModal').showModal();
-}
+  //way-2
+  document.getElementById("customModal").showModal();
+};
 //Create videoCategories
 const loadVideos = (searchText = "") => {
   //Fetch Data
-  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
+  fetch(
+    `https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`
+  )
     .then((res) => res.json())
     .then((data) => displayVideos(data.videos))
     .catch((error) => console.log("error msg:", error));
@@ -116,7 +118,9 @@ const displayVideos = (videos) => {
         }
         
       </div>
-      <p><button onclick="loadVideoDetails('${video.video_id}')" class="btn btn-sm btn-error">Details</button></p>
+      <p><button onclick="loadVideoDetails('${
+        video.video_id
+      }')" class="btn btn-sm btn-error">Details</button></p>
     </div>
 
   </div>
@@ -142,9 +146,9 @@ const displayCategories = (categories) => {
   });
 };
 
-document.getElementById('search-input').addEventListener('keyup',(e) => {
-    loadVideos(e.target.value);
-})
+document.getElementById("search-input").addEventListener("keyup", (e) => {
+  loadVideos(e.target.value);
+});
 
 loadCategories();
 loadVideos();
