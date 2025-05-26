@@ -1,4 +1,12 @@
 //console.log('kire sob thikache to?')
+function getTimeString(time) {
+  let hour = parseInt(time / 3600);
+  let min = parseInt((time % 3600) / 60);
+  let sec = parseInt((time % 3600) % 60);
+
+  return `${hour} hour ${min} min ${sec} sec ago`;
+}
+
 //Create loadCategories
 const loadCategories = () => {
   //Fetch Data
@@ -7,14 +15,74 @@ const loadCategories = () => {
     .then((data) => displayCategories(data.categories))
     .catch((error) => console.log("error msg:", error));
 };
+//Create videoCategories
+const loadVideos = () => {
+  //Fetch Data
+  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+    .then((res) => res.json())
+    .then((data) => displayVideos(data.videos))
+    .catch((error) => console.log("error msg:", error));
+};
+
+//load Category Videos
+
+
+//create Display Videos
+const displayVideos = (videos) => {
+  // console.log(videos);
+  const videoContainer = document.getElementById("videos");
+  videos.forEach((video) => {
+    // console.log(video);
+    const card = document.createElement("div");
+    card.classList = "card bg-base-100 shadow-sm";
+    card.innerHTML = `
+        <figure class="h-[200px] relative">
+    <img
+      src=${video.thumbnail}
+      class="w-full h-full object-cover"
+      alt="Shoes" />
+      ${
+        video.others.posted_date?.length == 0
+          ? ""
+          : `<span class="absolute bottom-2 right-2 text-xs bg-black rounded text-white p-1">${getTimeString(
+              video.others.posted_date
+            )}</span>`
+      }
+      
+  </figure>
+  <div class="px-0 py-2 flex gap-5">
+    <div class="">
+      <img class="w-10 h-10 rounded-full object-cover" src=${
+        video.authors[0].profile_picture
+      } alt="" />
+    </div>
+    <div>
+      <h2 class="font-bold">${video.title}</h2>
+      <div class="flex items-center gap-2">
+        <p class="text-gray-400">${video.authors[0].profile_name}</p>
+        ${
+          video.authors[0].verified === true
+            ? `<img class="w-5" src="https://img.icons8.com/?size=96&id=102561&format=png" alt="">`
+            : false
+        }
+        
+      </div>
+      <p></p>
+    </div>
+
+  </div>
+        `;
+    videoContainer.append(card);
+  });
+};
 //create DisplayCategories
 const displayCategories = (categories) => {
   const categoryContainer = document.getElementById("category-container");
   //create buttonton
   categories.forEach((item) => {
-    console.log(item);
+    // console.log(item);
     const button = document.createElement("button");
-    button.classList='btn'
+    button.classList = "btn";
     button.innerText = item.category;
 
     //add button to category Container
@@ -22,3 +90,4 @@ const displayCategories = (categories) => {
   });
 };
 loadCategories();
+loadVideos();
