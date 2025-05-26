@@ -7,12 +7,11 @@ function getTimeString(time) {
   return `${hour} hour ${min} min ${sec} sec ago`;
 }
 
-const removeActiveClass = () =>{
-    const btnCatcher = document.getElementsByClassName('category-btn');
-    for(let btn of btnCatcher){
-        btn.classList.remove('active');
-    }
-    
+const removeActiveClass = () => {
+  const btnCatcher = document.getElementsByClassName("category-btn");
+  for (let btn of btnCatcher) {
+    btn.classList.remove("active");
+  }
 };
 
 //Create loadCategories
@@ -23,6 +22,27 @@ const loadCategories = () => {
     .then((data) => displayCategories(data.categories))
     .catch((error) => console.log("error msg:", error));
 };
+// Load video Details Button
+const loadVideoDetails = async (videoId) => {
+    const url = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
+    const res = await fetch(url);
+    const data = await res.json();
+    displayDetails(data.video);
+}
+
+const displayDetails = (video) => {
+    const modalContent = document.getElementById('modal-content');
+    modalContent.innerHTML=`
+    <img src="${video.thumbnail}">
+    <p>${video.description}</p>
+    `
+
+    //way-1
+    // document.getElementById('showModalData').click();
+
+    //way-2
+    document.getElementById('customModal').showModal();
+}
 //Create videoCategories
 const loadVideos = () => {
   //Fetch Data
@@ -34,27 +54,26 @@ const loadVideos = () => {
 
 //load Category Videos
 const loadCategoryVideos = (id) => {
-    // alert(id);
-    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+  // alert(id);
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
     .then((res) => res.json())
     .then((data) => {
-        removeActiveClass();
-        const activeBtn = document.getElementById(`btn-${id}`);
-        activeBtn.classList.add('active');
-        displayVideos(data.category)})
+      removeActiveClass();
+      const activeBtn = document.getElementById(`btn-${id}`);
+      activeBtn.classList.add("active");
+      displayVideos(data.category);
+    })
     .catch((error) => console.log("error msg:", error));
-
-
 };
 
 //Display Videos
 const displayVideos = (videos) => {
   // console.log(videos);
   const videoContainer = document.getElementById("videos");
-  videoContainer.innerHTML="";
-  if(videos.length == 0){
-    videoContainer.classList.remove('grid');
-    videoContainer.innerHTML=`
+  videoContainer.innerHTML = "";
+  if (videos.length == 0) {
+    videoContainer.classList.remove("grid");
+    videoContainer.innerHTML = `
     <div class="min-h-[300px] flex flex-col justify-center items-center gap-5">
     <img src="icon.png">
     <h2 class="text-center text-xl font-bold">No Content Here in this category.</h2>
@@ -93,11 +112,11 @@ const displayVideos = (videos) => {
         ${
           video.authors[0].verified === true
             ? `<img class="w-5" src="https://img.icons8.com/?size=96&id=102561&format=png" alt="">`
-            : false
+            : ""
         }
         
       </div>
-      <p></p>
+      <p><button onclick="loadVideoDetails('${video.video_id}')" class="btn btn-sm btn-error">Details</button></p>
     </div>
 
   </div>
