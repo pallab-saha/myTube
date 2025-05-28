@@ -14,6 +14,21 @@ const removeActiveClass = () => {
   }
 };
 
+const allVideosShow = () => {
+  document.getElementById("all").addEventListener("click", async () => {
+    removeActiveClass();
+    document.getElementById("all").classList.add("active");
+    const url = `https://openapi.programming-hero.com/api/phero-tube/videos`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      displayVideos(data.videos);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  });
+};
+
 //Create loadCategories
 const loadCategories = () => {
   //Fetch Data
@@ -150,5 +165,6 @@ document.getElementById("search-input").addEventListener("keyup", (e) => {
   loadVideos(e.target.value);
 });
 
+allVideosShow();
 loadCategories();
 loadVideos();
