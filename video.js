@@ -86,6 +86,8 @@ const loadCategoryVideos = (id) => {
 //Display Videos
 const displayVideos = (videos) => {
   // console.log(videos);
+  window.currentVideos = videos;
+
   const videoContainer = document.getElementById("videos");
   videoContainer.innerHTML = "";
   if (videos.length == 0) {
@@ -164,6 +166,28 @@ const displayCategories = (categories) => {
 document.getElementById("search-input").addEventListener("keyup", (e) => {
   loadVideos(e.target.value);
 });
+
+//Sorting Option added
+document.getElementById("sort-select").addEventListener("change", (e) => {
+  const option = e.target.value;
+  let videos = [...window.currentVideos];
+
+  if (option === "views") {
+    videos.sort((a, b) => {
+      const viewA = parseInt(a.others.views.replace("K", "000")) || 0;
+      const viewB = parseInt(b.others.views.replace("K", "000")) || 0;
+      return viewB - viewA;
+    });
+  } else if (option === "title") {
+    videos.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (option === "date") {
+    videos.sort((a, b) => (b.others.posted_date || 0) - (a.others.posted_date || 0));
+  }
+
+  displayVideos(videos);
+});
+
+
 
 allVideosShow();
 loadCategories();

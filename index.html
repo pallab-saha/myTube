@@ -48,7 +48,12 @@
         </label>
       </div>
       <div class="sort pt-5">
-        <button class="btn">Sort</button>
+        <select id="sort-select" class="select select-bordered w-full max-w-xs">
+          <option disabled selected>Sort By</option>
+          <option value="views">Most Viewed</option>
+          <option value="title">Title (A-Z)</option>
+          <option value="date">Newest First</option>
+        </select>
       </div>
     </nav>
     <section id="category-container" class="py-3 flex justify-center gap-5">
