@@ -94,7 +94,7 @@ const displayVideos = (videos) => {
     videoContainer.classList.remove("grid");
     videoContainer.innerHTML = `
     <div class="min-h-[300px] flex flex-col justify-center items-center gap-5">
-    <img src="icon.png">
+    <img src="/icon.png">
     <h2 class="text-center text-xl font-bold">No Content Here in this category.</h2>
     </div>`;
     return;
@@ -181,13 +181,13 @@ document.getElementById("sort-select").addEventListener("change", (e) => {
   } else if (option === "title") {
     videos.sort((a, b) => a.title.localeCompare(b.title));
   } else if (option === "date") {
-    videos.sort((a, b) => (b.others.posted_date || 0) - (a.others.posted_date || 0));
+    videos.sort(
+      (a, b) => (b.others.posted_date || 0) - (a.others.posted_date || 0)
+    );
   }
 
   displayVideos(videos);
 });
-
-
 
 allVideosShow();
 loadCategories();
